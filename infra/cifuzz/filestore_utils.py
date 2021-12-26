@@ -36,6 +36,13 @@ def get_filestore(config):
 
     return filestore.git.GitFilestore(config, ci_filestore)
 
+  if config.platform == config.Platform.EXTERNAL_GITLAB:
+    ci_filestore = filestore.gitlab_ci.GitlabCiFilestore(config)
+    if not config.git_store_repo:
+      raise filestore.FilestoreError('Git storage repo required for GitLab.')
+
+    return filestore.git.GitFilestore(config, ci_filestore)
+
   filestore_cls = FILESTORE_MAPPING.get(config.filestore)
   if filestore_cls is None:
     raise filestore.FilestoreError('Filestore doesn\'t exist.')
