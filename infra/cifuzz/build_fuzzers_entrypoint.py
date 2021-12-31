@@ -28,6 +28,7 @@ logs.init()
 def build_fuzzers_entrypoint():
   """Builds OSS-Fuzz project's fuzzers for CI tools."""
   config = config_utils.BuildFuzzersConfig()
+  logging.info('config.cfl_platform: %s.', config.cfl_platform)
 
   if config.dry_run:
     # Sets the default return code on error to success.

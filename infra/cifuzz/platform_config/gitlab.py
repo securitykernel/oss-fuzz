@@ -17,6 +17,7 @@ import os
 
 import platform_config
 
+
 class PlatformConfig(platform_config.BasePlatformConfig):
   """CI environment for GitLab."""
 
@@ -24,8 +25,9 @@ class PlatformConfig(platform_config.BasePlatformConfig):
   def project_src_path(self):
     """Returns the manually checked out path of the project's source if
     specified or the value of CI_PROJECT_DIR if not."""
-    project_src_path = os.getenv('PROJECT_SRC_PATH', os.getenv('CI_PROJECT_DIR'))
-    logging.debug('PROJECT_SRC_PATH: %s.', project_src_path)
+    project_src_path = os.getenv('PROJECT_SRC_PATH',
+                                 os.getenv('CI_PROJECT_DIR'))
+    logging.info('PROJECT_SRC_PATH: %s.', project_src_path)
 
   @property
   def workspace(self):
@@ -54,3 +56,8 @@ class PlatformConfig(platform_config.BasePlatformConfig):
   def token(self):
     """Returns the CI API token."""
     return os.environ.get('CI_JOB_TOKEN')
+
+  @property
+  def filestore(self):
+    """Returns the filestore used to store persistent data."""
+    return os.environ.get('FILESTORE', 'git')

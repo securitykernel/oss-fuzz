@@ -15,6 +15,7 @@
 import filestore
 import filestore.git
 import filestore.github_actions
+import filestore.gitlab_ci
 import filestore.gsutil
 import filestore.no_filestore
 
@@ -36,10 +37,11 @@ def get_filestore(config):
 
     return filestore.git.GitFilestore(config, ci_filestore)
 
-  if config.platform == config.Platform.EXTERNAL_GITLAB:
+  if True:
+    #if config.platform == config.Platform.EXTERNAL_GITLAB:
     ci_filestore = filestore.gitlab_ci.GitlabCiFilestore(config)
     if not config.git_store_repo:
-      raise filestore.FilestoreError('Git storage repo required for GitLab.')
+      raise filestore.FilestoreError('Git storage repo required for GitLab CI.')
 
     return filestore.git.GitFilestore(config, ci_filestore)
 

@@ -99,6 +99,8 @@ class BaseCi:
   def _build_external_project_docker_image(self, manager):
     """Helper for child classes that builds an external project's docker image.
     Returns a BuildPreparationResult indicating failure or success."""
+    logging.info('manager.repo_dir: %s.', manager.repo_dir)
+    logging.info('self.config.build_integration_path: %s.', self.config.build_integration_path)
     build_integration_abs_path = os.path.join(
         manager.repo_dir, self.config.build_integration_path)
     if not build_external_project_docker_image(manager.repo_dir,
@@ -143,6 +145,7 @@ class BaseCi:
 
   def _create_repo_manager_for_project_src_path(self):
     """Returns a repo manager for |project_src_path|."""
+    logging.info('self.config.project_src_path: %s', self.config.project_src_path)
     return repo_manager.RepoManager(self.config.project_src_path)
 
 
