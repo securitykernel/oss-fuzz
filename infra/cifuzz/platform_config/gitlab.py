@@ -25,9 +25,7 @@ class PlatformConfig(platform_config.BasePlatformConfig):
   def project_src_path(self):
     """Returns the manually checked out path of the project's source if
     specified or the value of CI_PROJECT_DIR if not."""
-    project_src_path = os.getenv('PROJECT_SRC_PATH',
-                                 os.getenv('CI_PROJECT_DIR'))
-    logging.info('PROJECT_SRC_PATH: %s.', project_src_path)
+    return os.getenv('CI_PROJECT_DIR')
 
   @property
   def workspace(self):
@@ -61,3 +59,18 @@ class PlatformConfig(platform_config.BasePlatformConfig):
   def filestore(self):
     """Returns the filestore used to store persistent data."""
     return os.environ.get('FILESTORE', 'git')
+
+  @property
+  def base_commit(self):
+    """Returns the previous commit sha for commit-fuzzing"""
+    base_commit = None
+    if os.getenv('CI_PIPELINE_SOURCE') == 'push':
+      base_commit = os.getenv('CI_COMMIT_BEFORE_SHA')
+    logging.debug('base_commit: %s.', base_commit)
+    return base_commit
+
+  @property
+  def base_ref(self):
+    """Returns the base commit sha for a merge request"""
+    # could also be CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    return os.getenv('CI_MERGE_REQUEST_DIFF_BASE_SHA')
